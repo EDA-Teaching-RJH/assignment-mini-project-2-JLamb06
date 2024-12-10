@@ -29,25 +29,21 @@ class Character:
             type = type.lower().strip()
             if type == "knight":
                 weapon = self.avaiweapons[0]
-                self.urweapons.append(weapon)
+                urweapons.append(weapon)
                 break
             if type == "wizard":
                 weapon = self.avaiweapons[7]
-                self.urweapons.append(weapon)
+                urweapons.append(weapon)
                 break
             if type == "archer":
                 weapon = self.avaiweapons[8]
-                self.urweapons.append(weapon)
+                urweapons.append(weapon)
                 break
             else:
                 print("That is not a valid class, please try again.")
         
         character = Character(name,weapon,type)
         return character
-    
-if __name__ == "__main__":
-    character = Character("", "","")
-    character.main()
 
 def ur_dice_roll():
     global roll
@@ -131,11 +127,29 @@ def game_dice_roll():
         print("[0 0 0]")
         print("[-----]")
 
-def tutorial():
-    print(cowsay.fox(f"I am going to teach you how to play \n I have 50 health and you must roll a higher number than I do to be able to hit me. "))
-    ur_dice_roll()
-    game_dice_roll
-        
+Barebow = {
+    "Damage" : 25,
+    "Armour" : "Piercing",
+}
+
+foxstats = {
+    "Health" : 50,
+    "Damage" : 5,
+    "Armour" : 1
+    }
+
+if __name__ == "__main__":
+    character = Character("", "","")
+    character.main()
+
+print(cowsay.fox(f"I am going to teach you how to play \n I have {foxstats['Health']} health and you must roll a higher \n number than I do to be able to hit me. "))
+ur_dice_roll()
+game_dice_roll()
+if roll > gameroll and "Barebow" in equipped:
+    foxstats["Health"] == foxstats["Health"] - Barebow["Damage"]
+    print(cowsay.fox(f"Ouch, I now have {foxstats["Health"]} health left."))
+else:
+    print("miss")
 
 #Weapon = sword & shield, bow, sword, 2 handed sword, 2 swords, spear, wand,staff, magical stick
 #type = knight wizard/witch king/queen cavalry archer
