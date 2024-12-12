@@ -209,9 +209,13 @@ def fox():
 def stegosaurus():
     print("")
 
+
+if turns >= 1:
+    plays = input ("Would you like to continue playing? \n Please enter yes or no. ")
+    plays == plays.strip().lower()
 while play == True:
     fox()
 
-    
+
 #Weapon = sword & shield, bow, sword, 2 handed sword, 2 swords, spear, wand,staff, magical stick
 #type = knight wizard/witch king/queen cavalry archer
