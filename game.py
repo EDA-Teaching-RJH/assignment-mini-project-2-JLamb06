@@ -7,7 +7,7 @@ equipped = []
 
 class Character:
     types = ["knight","wizard","archer"]
-    avaiweapons = ["Sword","Shield","2 Handed Sword","2 Swords","Spear","Wand","Staff","Magical Stick","Bare Bow","Recurve Bow","Compound Bow"]
+    avaiweapons = ["sword","shield","spear","Wand","Staff","Bare Bow","Recurve Bow"]
     
 
     def __init__ (self,name,weapon,type):
@@ -19,7 +19,7 @@ class Character:
 
     def main(self):
         character = self.get_character()
-        print(f"You are {character.name} a {character.type} with a {character.weapon}")
+        print(cowsay.beavis(f"I am {character.name} a {character.type} with a {character.weapon}"))
 
     def get_character(self):
         name = input("Enter your characters name: ")
@@ -38,6 +38,7 @@ class Character:
             if type == "archer":
                 weapon = self.avaiweapons[8]
                 urweapons.append(weapon)
+                equipped.append(weapon)
                 break
             else:
                 print("That is not a valid class, please try again.")
@@ -129,12 +130,24 @@ def game_dice_roll():
 
 Barebow = {
     "Damage" : 25,
-    "Armour" : "Piercing",
+    "Armour" : "Piercing"
+}
+
+Sword = {
+    "Damage" : 10,
+    "Armour" : "Blunt"
+}
+
+urstats = {
+    "Health" : 150,
+    "Armour" : 1,
+    "money" : 0,
+    "points" : 0,
 }
 
 foxstats = {
     "Health" : 50,
-    "Damage" : 5,
+    "Damage" : 10,
     "Armour" : 1
     }
 
@@ -142,14 +155,46 @@ if __name__ == "__main__":
     character = Character("", "","")
     character.main()
 
-print(cowsay.fox(f"I am going to teach you how to play \n I have {foxstats['Health']} health and you must roll a higher \n number than I do to be able to hit me. "))
-ur_dice_roll()
-game_dice_roll()
-if roll > gameroll and "Barebow" in equipped:
-    foxstats["Health"] == foxstats["Health"] - Barebow["Damage"]
-    print(cowsay.fox(f"Ouch, I now have {foxstats["Health"]} health left."))
-else:
-    print("miss")
+gameattacks = ["attack","block"]
+
+def fox():
+    print(cowsay.fox(f"I am going to teach you how to play \n I have {foxstats['Health']} health and you must roll a higher \n number than I do to be able to hit me. "))
+    while foxstats["Health"] > 0 and urstats["Health"] > 0:
+        blocking == "nothing"
+        ur_dice_roll()
+        game_dice_roll()
+        attack = input("Would you like to attack, block or escape? ")
+        attack = attack.lower().strip()
+        if attack == "attack" and roll > gameroll:
+            if "barebow" in equipped:
+                foxstats["Health"] = foxstats["Health"] - Barebow["Damage"]
+                print(cowsay.fox(f"Ouch, I now have {foxstats["Health"]} health left."))
+        if attack == "block" and roll > gameroll:
+            if "shield" in equipped:
+                blocking = "shield"
+            else:
+                blocking = "weapon"
+        if attack == "escape" and roll > gameroll:
+            print(cowsay.beavis(f"Runaway!!!! \n I escaped with {urstats["Health"]} health"))
+            break
+        if gameattacks == "attack" and gameroll > roll:
+            if blocking == "shield":
+                urstats["Health"] = urstats["Health"] - (foxstats["Damage"] / 5)
+                print(cowsay.beavis(f"Ouch you just hit me! \n I now have {urstats['Health']}"))
+            if blocking == "weapon":
+                urstats["Health"] = urstats["Health"] - (foxstats["Damage"] / 2)
+                print(cowsay.beavis(f"Ouch you just hit me! \n I now have {urstats['Health']}"))
+            else:
+                urstats["Health"] = urstats["Health"] - foxstats["Damage"]
+                print(cowsay.beavis(f"Ouch you just hit me! \n I now have {urstats['Health']}"))
+        if gameattacks == "Blocking" and 
+        
+        
+        
+        
+        
+        if roll == gameroll:
+            print(cowsay.beavis(f"We'll call this one a draw. "))
 
 #Weapon = sword & shield, bow, sword, 2 handed sword, 2 swords, spear, wand,staff, magical stick
 #type = knight wizard/witch king/queen cavalry archer
