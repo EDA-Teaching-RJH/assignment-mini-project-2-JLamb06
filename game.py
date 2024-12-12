@@ -4,6 +4,8 @@ import random
 urweapons = []
 inventory = []
 equipped = []
+turns = 0
+play = True
 
 class Character:
     types = ["knight","wizard","archer"]
@@ -167,6 +169,10 @@ if __name__ == "__main__":
 
 def fox():
     while foxstats["Health"] > 0 and urstats["Health"] > 0:
+        if turns == 1:
+            print(cowsay.fox(f"I am going to teach you how to play \n I have {foxstats['Health']} health and you must roll a higher \n number than I do to be able to hit me. "))
+        else:
+            print(cowsay.fox(f"I am going to defeat you!!! \n I have {foxstats['Health']} health. "))
         attack = input("Would you like to attack or escape? ")
         ur_dice_roll()
         game_dice_roll()
@@ -176,6 +182,7 @@ def fox():
                 foxstats["Health"] = foxstats["Health"] - Barebow["Damage"]
                 if foxstats["Health"] <= 0:
                     print(cowsay.fox(f"Noooo, I have been Defeated \n You now get {foxstats['Points']} points."))
+                    turns =+ 1
                 else:
                     print(cowsay.fox(f"Ouch, I now have {foxstats["Health"]} health left."))
         if attack == "escape" and roll > gameroll:
@@ -188,6 +195,7 @@ def fox():
                 urstats["Health"] = urstats["Health"] - (foxstats["Damage"] / 10)
                 if urstats["Health"] <= 0:
                     print(cowsay.beavis(f"Aaargh, I've been defeated!!!! \n You got {urstats['points']} points before dying. "))
+                    turns =+ 1
                 else:
                     print(cowsay.beavis(f"Ouch you just hit me! \n I now have {urstats['Health']}"))
             else:
@@ -201,7 +209,9 @@ def fox():
 def stegosaurus():
     print("")
 
-print(cowsay.fox(f"I am going to teach you how to play \n I have {foxstats['Health']} health and you must roll a higher \n number than I do to be able to hit me. "))
-fox()
+while play == True:
+    fox()
+
+    
 #Weapon = sword & shield, bow, sword, 2 handed sword, 2 swords, spear, wand,staff, magical stick
 #type = knight wizard/witch king/queen cavalry archer
