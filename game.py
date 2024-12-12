@@ -7,7 +7,7 @@ equipped = []
 
 class Character:
     types = ["knight","wizard","archer"]
-    avaiweapons = ["sword","shield","spear","Wand","Staff","Bare Bow","Recurve Bow"]
+    avaiweapons = ["sword","shield","spear","wand","staff","barebow","recurvebow"]
     
 
     def __init__ (self,name,weapon,type):
@@ -32,11 +32,11 @@ class Character:
                 urweapons.append(weapon)
                 break
             if type == "wizard":
-                weapon = self.avaiweapons[7]
+                weapon = self.avaiweapons[3]
                 urweapons.append(weapon)
                 break
             if type == "archer":
-                weapon = self.avaiweapons[8]
+                weapon = self.avaiweapons[5]
                 urweapons.append(weapon)
                 equipped.append(weapon)
                 break
@@ -148,53 +148,60 @@ urstats = {
 foxstats = {
     "Health" : 50,
     "Damage" : 10,
-    "Armour" : 1
+    "Armour" : 1,
+    "Points" : 15
     }
+
+trexstats = {
+    "Health" : 200,
+    "Armour" : 10,
+    "Points" : 200,
+    "Damage" : 100
+}
+
+attacks = ["attack","escape"]
 
 if __name__ == "__main__":
     character = Character("", "","")
     character.main()
 
-gameattacks = ["attack","block"]
-
 def fox():
-    print(cowsay.fox(f"I am going to teach you how to play \n I have {foxstats['Health']} health and you must roll a higher \n number than I do to be able to hit me. "))
     while foxstats["Health"] > 0 and urstats["Health"] > 0:
-        blocking == "nothing"
+        attack = input("Would you like to attack or escape? ")
         ur_dice_roll()
         game_dice_roll()
-        attack = input("Would you like to attack, block or escape? ")
         attack = attack.lower().strip()
         if attack == "attack" and roll > gameroll:
             if "barebow" in equipped:
                 foxstats["Health"] = foxstats["Health"] - Barebow["Damage"]
-                print(cowsay.fox(f"Ouch, I now have {foxstats["Health"]} health left."))
-        if attack == "block" and roll > gameroll:
-            if "shield" in equipped:
-                blocking = "shield"
-            else:
-                blocking = "weapon"
+                if foxstats["Health"] <= 0:
+                    print(cowsay.fox(f"Noooo, I have been Defeated \n You now get {foxstats['Points']} points."))
+                else:
+                    print(cowsay.fox(f"Ouch, I now have {foxstats["Health"]} health left."))
         if attack == "escape" and roll > gameroll:
             print(cowsay.beavis(f"Runaway!!!! \n I escaped with {urstats["Health"]} health"))
             break
-        if gameattacks == "attack" and gameroll > roll:
-            if blocking == "shield":
-                urstats["Health"] = urstats["Health"] - (foxstats["Damage"] / 5)
-                print(cowsay.beavis(f"Ouch you just hit me! \n I now have {urstats['Health']}"))
-            if blocking == "weapon":
-                urstats["Health"] = urstats["Health"] - (foxstats["Damage"] / 2)
-                print(cowsay.beavis(f"Ouch you just hit me! \n I now have {urstats['Health']}"))
+        if attack == "escape" and roll < gameroll:
+            print(cowsay.beavis(F"I can't escape at the moment"))
+        if gameroll > roll:
+            if "shield" in equipped:
+                urstats["Health"] = urstats["Health"] - (foxstats["Damage"] / 10)
+                if urstats["Health"] <= 0:
+                    print(cowsay.beavis(f"Aaargh, I've been defeated!!!! \n You got {urstats['points']} points before dying. "))
+                else:
+                    print(cowsay.beavis(f"Ouch you just hit me! \n I now have {urstats['Health']}"))
             else:
                 urstats["Health"] = urstats["Health"] - foxstats["Damage"]
                 print(cowsay.beavis(f"Ouch you just hit me! \n I now have {urstats['Health']}"))
-        if gameattacks == "Blocking" and 
-        
-        
-        
-        
-        
         if roll == gameroll:
             print(cowsay.beavis(f"We'll call this one a draw. "))
+        if attack not in attacks:
+            print ("Please enter a valid response.")
 
+def stegosaurus():
+    print("")
+
+print(cowsay.fox(f"I am going to teach you how to play \n I have {foxstats['Health']} health and you must roll a higher \n number than I do to be able to hit me. "))
+fox()
 #Weapon = sword & shield, bow, sword, 2 handed sword, 2 swords, spear, wand,staff, magical stick
 #type = knight wizard/witch king/queen cavalry archer
