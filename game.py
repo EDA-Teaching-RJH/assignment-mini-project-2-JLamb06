@@ -5,7 +5,7 @@ urweapons = []
 inventory = []
 equipped = []
 turns = 0
-play = True
+global turns
 
 class Character:
     types = ["knight","wizard","archer"]
@@ -140,6 +140,11 @@ Sword = {
     "Armour" : "Blunt"
 }
 
+Wand = {
+    "Damage" : 20,
+    "Armour" : "Stun"
+}
+
 urstats = {
     "Health" : 150,
     "Armour" : 1,
@@ -185,6 +190,20 @@ def fox():
                     turns =+ 1
                 else:
                     print(cowsay.fox(f"Ouch, I now have {foxstats["Health"]} health left."))
+            if "sword" in equipped:
+                foxstats["Health"] = foxstats["Health"] - Sword["Damage"]
+                if foxstats["Health"] <= 0:
+                    print(cowsay.fox(f"Noooo, I have been Defeated \n You now get {foxstats['Points']} points."))
+                    turns =+ 1
+                else:
+                    print(cowsay.fox(f"Ouch, I now have {foxstats["Health"]} health left."))
+            if "wand" in equipped:
+                foxstats["Health"] = foxstats["Health"] - Wand["Damage"]
+                if foxstats["Health"] <= 0:
+                    print(cowsay.fox(f"Noooo, I have been Defeated \n You now get {foxstats['Points']} points."))
+                    turns =+ 1
+                else:
+                    print(cowsay.fox(f"Ouch, I now have {foxstats["Health"]} health left."))
         if attack == "escape" and roll > gameroll:
             print(cowsay.beavis(f"Runaway!!!! \n I escaped with {urstats["Health"]} health"))
             break
@@ -218,9 +237,23 @@ def stegosaurus():
                 stegostats["Health"] = stegostats["Health"] - Barebow["Damage"]
                 if stegostats["Health"] <= 0:
                     print(cowsay.stego(f"Noooo, I have been Defeated \n You now get {stegostats['Points']} points."))
-                    turns =+ 1
+                    turns = turns + 1
                 else:
                     print(cowsay.stego(f"Ouch, I now have {stegostats["Health"]} health left."))
+            if "sword" in equipped:
+                foxstats["Health"] = foxstats["Health"] - Sword["Damage"]
+                if foxstats["Health"] <= 0:
+                    print(cowsay.fox(f"Noooo, I have been Defeated \n You now get {foxstats['Points']} points."))
+                    turns =+ 1
+                else:
+                    print(cowsay.fox(f"Ouch, I now have {foxstats["Health"]} health left."))
+            if "wand" in equipped:
+                foxstats["Health"] = foxstats["Health"] - Wand["Damage"]
+                if foxstats["Health"] <= 0:
+                    print(cowsay.fox(f"Noooo, I have been Defeated \n You now get {foxstats['Points']} points."))
+                    turns =+ 1
+                else:
+                    print(cowsay.fox(f"Ouch, I now have {foxstats["Health"]} health left."))
         if attack == "escape" and roll > gameroll:
             print(cowsay.beavis(f"Runaway!!!! \n I escaped with {urstats["Health"]} health"))
             break
@@ -231,7 +264,7 @@ def stegosaurus():
                 urstats["Health"] = urstats["Health"] - (foxstats["Damage"] / 10)
                 if urstats["Health"] <= 0:
                     print(cowsay.beavis(f"Aaargh, I've been defeated!!!! \n You got {urstats['points']} points before dying. "))
-                    turns =+ 1
+                    turns = turns + 1
                 else:
                     print(cowsay.beavis(f"Ouch you just hit me! \n I now have {urstats['Health']}"))
             else:
@@ -242,19 +275,47 @@ def stegosaurus():
         if attack not in attacks:
             print ("Please enter a valid response.")
 
-enemies = ["fox","stego"]
-enemy = "fox"
 
-if turns >= 1:
-    plays = input ("Would you like to continue playing? \n Please enter yes or no. ")
-    plays == plays.strip().lower()
-    enemy = random.choice(enemies)
-while play == True:
-    if enemy == "fox":
-        fox()
-    if enemy == "stego":
-        stegosaurus()
+def game():
+    enemies = ["fox","stego"]
+    enemy = "fox"
+    plays = "yes"
+    if turns >= 1:
+        while plays != "yes" or "no":
+            plays = input ("Would you like to continue playing? \n Please enter yes or no. ")
+            plays == plays.strip().lower()
+        enemy = random.choice(enemies)
+    while plays == "yes":
+        if enemy == "fox":
+            fox()
+        if enemy == "stego":
+            stegosaurus()
+    if plays == "no" or urstats["Health"] <= 0:
+        savescore = "abc"
+        while savescore != "yes" or "no":
+            savescore = input("Would you like to save your score? \n Please enter yes or no. ")
+            savescore = savescore.strip().lower()
+        if savescore == "yes":
+            code = input("Enter a 6 digit numerical code to remember your score.")
+            if re.search (r"[6Z0-9]", code):
+                scoresheet = open("Scoresheet.txt", "a")
+                scoresheet.write (f"Code: {code}, Name: {character.name} with {urstats['points']} points. \n")
+            else:
+                raise ValueError("That is not a valid code so your progress will not be saved.")
+        else:
+            cowsay.beavis(f"Our hard work will not be remembered.")
+        scoreboard = "abc"
+        while scoreboard != "yes" or "no":
+            scoreboard = input("Would you like to see one of your previous scores? If so please enter yes or no. ")
+            scoreboard = scoreboard.strip().lower()
+        if scoreboard == "yes":
+            code2 = input("Enter the 6 digit numerical code you used. ")
+            with open(r'Scoresheet.txt', 'r') as file:
+                scores = file.read()
+                if code2 in scores:
+                    print(scores.code2)
+                else:
+                    print("A character with that code does not exist. ")
+        
 
-
-#Weapon = sword & shield, bow, sword, 2 handed sword, 2 swords, spear, wand,staff, magical stick
-#type = knight wizard/witch king/queen cavalry archer
+game()
