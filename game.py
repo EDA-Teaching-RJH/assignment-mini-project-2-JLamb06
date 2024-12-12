@@ -154,11 +154,11 @@ foxstats = {
     "Points" : 15
     }
 
-trexstats = {
+stegostats = {
     "Health" : 200,
-    "Armour" : 10,
+    "Armour" : 20,
     "Points" : 200,
-    "Damage" : 100
+    "Damage" : 75
 }
 
 attacks = ["attack","escape"]
@@ -207,14 +207,53 @@ def fox():
             print ("Please enter a valid response.")
 
 def stegosaurus():
-    print("")
+    while stegostats["Health"] > 0 and urstats["Health"] > 0:
+        print(cowsay.stegosaurus(f"I am going to defeat you!!! \n I have {stegostats['Health']} health. "))
+        attack = input("Would you like to attack or escape? ")
+        ur_dice_roll()
+        game_dice_roll()
+        attack = attack.lower().strip()
+        if attack == "attack" and roll > gameroll:
+            if "barebow" in equipped:
+                stegostats["Health"] = stegostats["Health"] - Barebow["Damage"]
+                if stegostats["Health"] <= 0:
+                    print(cowsay.stego(f"Noooo, I have been Defeated \n You now get {stegostats['Points']} points."))
+                    turns =+ 1
+                else:
+                    print(cowsay.stego(f"Ouch, I now have {stegostats["Health"]} health left."))
+        if attack == "escape" and roll > gameroll:
+            print(cowsay.beavis(f"Runaway!!!! \n I escaped with {urstats["Health"]} health"))
+            break
+        if attack == "escape" and roll < gameroll:
+            print(cowsay.beavis(F"I can't escape at the moment"))
+        if gameroll > roll:
+            if "shield" in equipped:
+                urstats["Health"] = urstats["Health"] - (foxstats["Damage"] / 10)
+                if urstats["Health"] <= 0:
+                    print(cowsay.beavis(f"Aaargh, I've been defeated!!!! \n You got {urstats['points']} points before dying. "))
+                    turns =+ 1
+                else:
+                    print(cowsay.beavis(f"Ouch you just hit me! \n I now have {urstats['Health']}"))
+            else:
+                urstats["Health"] = urstats["Health"] - stegostats["Damage"]
+                print(cowsay.beavis(f"Ouch you just hit me! \n I now have {urstats['Health']}"))
+        if roll == gameroll:
+            print(cowsay.beavis(f"We'll call this one a draw. "))
+        if attack not in attacks:
+            print ("Please enter a valid response.")
 
+enemies = ["fox","stego"]
+enemy = "fox"
 
 if turns >= 1:
     plays = input ("Would you like to continue playing? \n Please enter yes or no. ")
     plays == plays.strip().lower()
+    enemy = random.choice(enemies)
 while play == True:
-    fox()
+    if enemy == "fox":
+        fox()
+    if enemy == "stego":
+        stegosaurus()
 
 
 #Weapon = sword & shield, bow, sword, 2 handed sword, 2 swords, spear, wand,staff, magical stick
