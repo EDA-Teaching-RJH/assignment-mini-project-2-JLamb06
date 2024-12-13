@@ -317,7 +317,13 @@ def game():
     if scoreboard == "no":
         print("Thanks for playing.")
 
-game()
+def complete():
+    game()
+    if eroor == ValueError:
+        print("That is an invalid input")
+    if eroor == ZeroDivisionError:
+        print("You cannot divide by 0")
+    else:
+        print("Thanks for playing")
 
-if eroor == ValueError:
-    print("That is an invalid input")
+complete()
