@@ -9,7 +9,6 @@ turns = 0
 class Character:
     types = ["knight","wizard","archer"]
     avaiweapons = ["sword","shield","spear","wand","staff","barebow","recurvebow"]
-    
 
     def __init__ (self,name,weapon,type):
         global types
@@ -19,6 +18,7 @@ class Character:
         self.type = type
 
     def main(self):
+        global character
         character = self.get_character()
         print(cowsay.beavis(f"I am {character.name} a {character.type} with a {character.weapon}"))
 
@@ -238,24 +238,25 @@ def stegosaurus():
             if "barebow" in equipped:
                 stegostats["Health"] = stegostats["Health"] - Barebow["Damage"]
                 if stegostats["Health"] <= 0:
-                    print(cowsay.stego(f"Noooo, I have been Defeated \n You now get {stegostats['Points']} points."))
+                    print(cowsay.stegosaurus(f"Noooo, I have been Defeated \n You now get {stegostats['Points']} points."))
                     turns = turns + 1
                 else:
-                    print(cowsay.stego(f"Ouch, I now have {stegostats["Health"]} health left."))
+                    print(cowsay.stegosaurus(f"Ouch, I now have {stegostats["Health"]} health left."))
             if "sword" in equipped:
-                foxstats["Health"] = foxstats["Health"] - Sword["Damage"]
-                if foxstats["Health"] <= 0:
-                    print(cowsay.fox(f"Noooo, I have been Defeated \n You now get {foxstats['Points']} points."))
+                stegostats["Health"] = stegostats["Health"] - Sword["Damage"]
+                if stegostats["Health"] <= 0:
+                    print(cowsay.stegosaurus(f"Noooo, I have been Defeated \n You now get {stegostats['Points']} points."))
                     turns =+ 1
                 else:
-                    print(cowsay.fox(f"Ouch, I now have {foxstats["Health"]} health left."))
+                    print(cowsay.stegosaurus(f"Ouch, I now have {stegostats["Health"]} health left."))
             if "wand" in equipped:
-                foxstats["Health"] = foxstats["Health"] - Wand["Damage"]
-                if foxstats["Health"] <= 0:
-                    print(cowsay.fox(f"Noooo, I have been Defeated \n You now get {foxstats['Points']} points."))
+                stegostats["Health"] = stegostats["Health"] - Wand["Damage"]
+                if stegostats["Health"] <= 0:
+                    stegostats["Health"] = 0
+                    print(cowsay.stegosaurus(f"Noooo, I have been Defeated \n You now get {stegostats['Points']} points."))
                     turns =+ 1
                 else:
-                    print(cowsay.fox(f"Ouch, I now have {foxstats["Health"]} health left."))
+                    print(cowsay.stegosaurus(f"Ouch, I now have {stegostats["Health"]} health left."))
         if attack == "escape" and roll > gameroll:
             print(cowsay.beavis(f"Runaway!!!! \n I escaped with {urstats["Health"]} health"))
             break
@@ -282,98 +283,32 @@ def stegosaurus():
 def game():
     global turns
     turns += 1
-    enemies = ["fox","stego"]
-    enemy = "fox"
-    plays = True
-    plays1 = "yes"
-    plays2 = True
-    if plays2 == True:
-        if enemy == "fox":
-            fox()
-            if plays1 == "no" or urstats["Health"] <= 0:
-                savedscore = True
-                while savedscore == True:
-                    savescore = input("Would you like to save your score? \n Please enter yes or no. ")
-                    savescore = savescore.strip().lower()
-                    if savescore == "yes":
-                        code = input("Enter a 6 digit numerical code to remember your score.")
-                        if re.search (r"[6Z0-9]", code):
-                            scoresheet = open("Scoresheet.txt", "a")
-                            scoresheet.write (f"Code: {code}, Name: {character.name} with {urstats['points']} points. \n")
-                            print("Added your score to the scoreboard")
-                        else:
-                            raise ValueError("That is not a valid code so your progress will not be saved.")
-                    else:
-                        cowsay.beavis(f"Our hard work will not be remembered.")
-                scoredboard = True
-                while scoredboard == True:
-                    scoreboard = input("Would you like to see one of your previous scores? If so please enter yes or no. ")
-                    scoreboard = scoreboard.strip().lower()
-                    if scoreboard == "yes":
-                        code2 = input("Enter the 6 digit numerical code you used. ")
-                        with open(r'Scoresheet.txt', 'r') as file:
-                            scores = file.readline(code2)
-                            if code2 in scores:
-                                print(scores.code2)
-                            else:
-                                print("A character with that code does not exist. ")
-                    if scoreboard == "no":
-                        print("Thanks for playing.")
-            else:
-                if turns >= 1:
-                    plays1 = input ("Would you like to continue playing? \nPlease enter yes or no. ")
-                    plays1.lower().strip()
-                    if plays1 == "yes":
-                        foxstats["Health"] = 50
-                        plays2 = True
-                    elif plays2 == "no":
-                        plays2 = False
-                    else:
-                        raise ValueError("Invalid input")
-                enemy = random.choice(enemies)
-        if enemy == "stego":
-            stegosaurus()
-            if plays1 == "no" or urstats["Health"] <= 0:
-                savedscore = True
-                while savedscore == True:
-                    savescore = input("Would you like to save your score? \n Please enter yes or no. ")
-                    savescore = savescore.strip().lower()
-                    if savescore == "yes":
-                        code = input("Enter a 6 digit numerical code to remember your score.")
-                        if re.search (r"[6Z0-9]", code):
-                            scoresheet = open("Scoresheet.txt", "a")
-                            scoresheet.write (f"Code: {code}, Name: {character.name} with {urstats['points']} points. \n")
-                            print("Added your score to the scoreboard")
-                        else:
-                            raise ValueError("That is not a valid code so your progress will not be saved.")
-                    else:
-                        cowsay.beavis(f"Our hard work will not be remembered.")
-                scoredboard = True
-                while scoredboard == True:
-                    scoreboard = input("Would you like to see one of your previous scores? If so please enter yes or no. ")
-                    scoreboard = scoreboard.strip().lower()
-                    if scoreboard == "yes":
-                        code2 = input("Enter the 6 digit numerical code you used. ")
-                        with open(r'Scoresheet.txt', 'r') as file:
-                            scores = file.readline(code2)
-                            if code2 in scores:
-                                print(scores.code2)
-                            else:
-                                print("A character with that code does not exist. ")
-                    if scoreboard == "no":
-                        print("Thanks for playing.")
-            else:
-                if turns >= 1:
-                    plays1 = input ("Would you like to continue playing? \nPlease enter yes or no. ")
-                    plays1.lower().strip()
-                    if plays1 == "yes":
-                        stegostats["Health"] = 200
-                        plays2 = True
-                    elif plays2 == "no":
-                        plays2 = False
-                    else:
-                        raise ValueError ("Invalid input")
-                enemy = random.choice(enemies)
+    fox()
+    stegosaurus()
+    savescore = input("Would you like to save your score? \nPlease enter yes or no. ")
+    savescore = savescore.strip().lower()
+    if savescore == "yes":
+        code = input("Enter a 6 digit numerical code to remember your score. ")
+        if re.search (r"[6Z0-9]", code) and len(code) == 6:
+            scoresheet = open("Scoresheet.txt", "a")
+            scoresheet.write (f"Code: {code}, Name: {character.name} with {urstats['points']} points.\n")
+            print("Added your score to the scoreboard")
+        else:
+            raise ValueError("That is not a valid code so your progress will not be saved. ")
+    else:
+        cowsay.beavis(f"Our hard work will not be remembered.")
     
-        
+    scoreboard = input("Would you like to see one of your previous scores? If so please enter yes or no. ")
+    scoreboard = scoreboard.strip().lower()
+    if scoreboard == "yes":
+        code2 = input("Enter the 6 digit numerical code you used. ")
+        with open(r'Scoresheet.txt', 'r') as file:
+            scores = file.readlines()
+            if code2 in scores:
+                print(scores)
+            else:
+                print("A character with that code does not exist. ")
+    if scoreboard == "no":
+        print("Thanks for playing.")
+
 game()
