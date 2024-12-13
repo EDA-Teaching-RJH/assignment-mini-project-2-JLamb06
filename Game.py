@@ -302,12 +302,12 @@ def game():
     scoreboard = scoreboard.strip().lower()
     if scoreboard == "yes":
         code2 = input("Enter the 6 digit numerical code you used. ")
-        with open(r'Scoresheet.txt', 'r') as file:
-            scores = file.readlines()
-            if code2 in scores:
-                print(scores)
-            else:
-                print("A character with that code does not exist. ")
+        file = open("Scoresheet.txt")
+        scores = file.readlines()
+        if code2 in scores:
+            print(scores)
+        else:
+            print("A character with that code does not exist. ")
     if scoreboard == "no":
         print("Thanks for playing.")
 
