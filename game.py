@@ -5,7 +5,6 @@ urweapons = []
 inventory = []
 equipped = []
 turns = 0
-global turns
 
 class Character:
     types = ["knight","wizard","archer"]
@@ -173,8 +172,10 @@ if __name__ == "__main__":
     character.main()
 
 def fox():
+    global turns
     while foxstats["Health"] > 0 and urstats["Health"] > 0:
-        if turns == 1:
+        turns += 1
+        if turns == 2:
             print(cowsay.fox(f"I am going to teach you how to play \n I have {foxstats['Health']} health and you must roll a higher \n number than I do to be able to hit me. "))
         else:
             print(cowsay.fox(f"I am going to defeat you!!! \n I have {foxstats['Health']} health. "))
@@ -277,45 +278,78 @@ def stegosaurus():
 
 
 def game():
+    global turns
+    turns += 1
     enemies = ["fox","stego"]
     enemy = "fox"
-    plays = "yes"
-    if turns >= 1:
-        while plays != "yes" or "no":
-            plays = input ("Would you like to continue playing? \n Please enter yes or no. ")
-            plays == plays.strip().lower()
+    plays = True
+    plays1 = "yes"
+    if turns > 1:
+        while plays == True:
+            plays1 = input ("Would you like to continue playing? \nPlease enter yes or no. ")
+            plays1 == plays1.strip().lower()
         enemy = random.choice(enemies)
-    while plays == "yes":
+    while plays1 == "yes":
         if enemy == "fox":
             fox()
+            if plays1 == "no" or urstats["Health"] <= 0:
+                savedscore = True
+                while savedscore == True:
+                    savescore = input("Would you like to save your score? \n Please enter yes or no. ")
+                    savescore = savescore.strip().lower()
+                    if savescore == "yes":
+                        code = input("Enter a 6 digit numerical code to remember your score.")
+                        if re.search (r"[6Z0-9]", code):
+                            scoresheet = open("Scoresheet.txt", "a")
+                            scoresheet.write (f"Code: {code}, Name: {character.name} with {urstats['points']} points. \n")
+                        else:
+                            raise ValueError("That is not a valid code so your progress will not be saved.")
+                    else:
+                        cowsay.beavis(f"Our hard work will not be remembered.")
+                scoredboard = True
+                while scoredboard == True:
+                    scoreboard = input("Would you like to see one of your previous scores? If so please enter yes or no. ")
+                    scoreboard = scoreboard.strip().lower()
+                    if scoreboard == "yes":
+                        code2 = input("Enter the 6 digit numerical code you used. ")
+                        with open(r'Scoresheet.txt', 'r') as file:
+                            scores = file.readline(code2)
+                            if code2 in scores:
+                                print(scores.code2)
+                            else:
+                                print("A character with that code does not exist. ")
+                    if scoreboard == "no":
+                        print("Thanks for playing.")
         if enemy == "stego":
             stegosaurus()
-    if plays == "no" or urstats["Health"] <= 0:
-        savescore = "abc"
-        while savescore != "yes" or "no":
-            savescore = input("Would you like to save your score? \n Please enter yes or no. ")
-            savescore = savescore.strip().lower()
-        if savescore == "yes":
-            code = input("Enter a 6 digit numerical code to remember your score.")
-            if re.search (r"[6Z0-9]", code):
-                scoresheet = open("Scoresheet.txt", "a")
-                scoresheet.write (f"Code: {code}, Name: {character.name} with {urstats['points']} points. \n")
-            else:
-                raise ValueError("That is not a valid code so your progress will not be saved.")
-        else:
-            cowsay.beavis(f"Our hard work will not be remembered.")
-        scoreboard = "abc"
-        while scoreboard != "yes" or "no":
-            scoreboard = input("Would you like to see one of your previous scores? If so please enter yes or no. ")
-            scoreboard = scoreboard.strip().lower()
-        if scoreboard == "yes":
-            code2 = input("Enter the 6 digit numerical code you used. ")
-            with open(r'Scoresheet.txt', 'r') as file:
-                scores = file.read()
-                if code2 in scores:
-                    print(scores.code2)
+            if plays1 == "no" or urstats["Health"] <= 0:
+                savedscore = True
+                while savedscore == True:
+                    savescore = input("Would you like to save your score? \n Please enter yes or no. ")
+                    savescore = savescore.strip().lower()
+                    if savescore == "yes":
+                        code = input("Enter a 6 digit numerical code to remember your score.")
+                        if re.search (r"[6Z0-9]", code):
+                            scoresheet = open("Scoresheet.txt", "a")
+                            scoresheet.write (f"Code: {code}, Name: {character.name} with {urstats['points']} points. \n")
+                    else:
+                        raise ValueError("That is not a valid code so your progress will not be saved.")
                 else:
-                    print("A character with that code does not exist. ")
+                    cowsay.beavis(f"Our hard work will not be remembered.")
+                scoredboard = True
+                while scoredboard == True:
+                    scoreboard = input("Would you like to see one of your previous scores? If so please enter yes or no. ")
+                    scoreboard = scoreboard.strip().lower()
+                    if scoreboard == "yes":
+                        code2 = input("Enter the 6 digit numerical code you used. ")
+                        with open(r'Scoresheet.txt', 'r') as file:
+                            scores = file.readline(code2)
+                            if code2 in scores:
+                                print(scores.code2)
+                            else:
+                                print("A character with that code does not exist. ")
+                    if scoreboard == "no":
+                        print("Thanks for playing.")
+    
         
-
 game()
