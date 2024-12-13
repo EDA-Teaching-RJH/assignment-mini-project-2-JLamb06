@@ -282,6 +282,8 @@ def stegosaurus():
 
 def game():
     global turns
+    global eroor
+    eroor = ""
     turns += 1
     fox()
     stegosaurus()
@@ -289,10 +291,11 @@ def game():
     savescore = savescore.strip().lower()
     if savescore == "yes":
         code = input("Enter a 6 digit numerical code to remember your score. ")
-        if re.search (r"[6Z0-9]", code) and len(code) == 6:
+        if re.search (r"^[0-9]{6,6}$", code):
             scoresheet = open("Scoresheet.txt", "a")
             scoresheet.write (f"Code: {code}, Name: {character.name} with {urstats['points']} points.\n")
             print("Added your score to the scoreboard")
+            scoresheet.close()
         else:
             raise ValueError("That is not a valid code so your progress will not be saved. ")
     else:
@@ -301,14 +304,20 @@ def game():
     scoreboard = input("Would you like to see one of your previous scores? If so please enter yes or no. ")
     scoreboard = scoreboard.strip().lower()
     if scoreboard == "yes":
-        code2 = input("Enter the 6 digit numerical code you used. ")
-        file = open("Scoresheet.txt")
-        scores = file.readlines()
-        if code2 in scores:
-            print(scores)
-        else:
-            print("A character with that code does not exist. ")
+        code2 = input("Enter a numerical code to access the scoreboard ")
+        try:
+            if re.search (r"^[0-9]{6,6}$", code2):
+                file = open("Scoresheet.txt","r")
+                for x in file:
+                    print(x)
+            else:
+                eroor = ValueError
+        except:
+            eroor = ValueError
     if scoreboard == "no":
         print("Thanks for playing.")
 
 game()
+
+if eroor == ValueError:
+    print("That is an invalid input")
